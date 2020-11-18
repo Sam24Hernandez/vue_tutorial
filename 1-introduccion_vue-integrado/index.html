@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Empezando Vue.js</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <style>
+      body {
+        background-color: #282c34;
+        text-align: center;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-size: calc(10px + 2vmin);
+        color: white;
+      }
+
+      span {
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 id="app">{{ message }}</h1>
+    <div id="app-2">
+      <span v-bind:title="message">
+        Mueva el mouse sobre mí durante unos segundos para ver mi título
+        enlazado dinámicamente.
+      </span>
+    </div>
+    &nbsp;
+    <div id="app-3">
+      <span v-if="seen">Ahora me ves</span>
+    </div>
+    &nbsp;
+    <div id="app-4">
+      <ol>
+        <li v-for="todo in todos">{{todo.text}}</li>
+      </ol>
+    </div>
+
+    &nbsp;
+    <div id="app-5">
+      <p>{{message}}</p>
+      <button v-on:click="reverseMessage">Mensaje invertido</button>
+    </div>
+
+    &nbsp;
+    <div id="app-6">
+      <p>{{message}}</p>
+      <input v-model="message" />
+    </div>
+
+    &nbsp;
+    <div id="app-7">
+      <h2>Usando Composición de Componentes</h2>
+      <ol>
+        <!--
+            Ahora proporcionamos a cada todo-item con el objeto todo
+            que representa, para que su contenido pueda ser dinámico.
+            También necesitamos proporcionar a cada componente con una "clave",
+            que vamos a explicar más adelante.
+        -->
+        <todo-item
+          v-for="item in groceryList"
+          v-bind:todo="item"
+          v-bind:key="item.id"
+        >
+        </todo-item>
+      </ol>
+    </div>
+
+    <script>
+      var app = new Vue({
+        el: "#app",
+        data: {
+          message: "Hola mundo, con Vue!",
+        },
+      });
+
+      var app2 = new Vue({
+        el: "#app-2",
+        data: {
+          message: "Usted cargó esta página el " + new Date().toLocaleString(),
+        },
+      });
+
+      var app3 = new Vue({
+        el: "#app-3",
+        data: {
+          seen: true,
+        },
+      });
+
+      var app4 = new Vue({
+        el: "#app-4",
+        data: {
+          todos: [
+            { text: "Aprender Javascript" },
+            { text: "Aprender Vue" },
+            { text: "Contruir una aplicación" },
+          ],
+        },
+      });
+
+      var app5 = new Vue({
+        el: "#app-5",
+        data: {
+          message: "Hola Vue.js!",
+        },
+        methods: {
+          reverseMessage: function () {
+            this.message = this.message.split("").reverse().join("");
+          },
+        },
+      });
+
+      var app6 = new Vue({
+        el: "#app-6",
+        data: {
+          message: "Hola Vue!",
+        },
+      });
+
+      // Definimos un nuevo componente llamado todo-item
+      Vue.component("todo-item", {
+        // El componente todo-item ahora acepta una
+        // "propiedad", que es como un atributo personalizado.
+        // Esta propiedad es llamada todo.
+        props: ["todo"],
+        template: "<li>{{todo.text}}</li>",
+      });
+
+      var app7 = new Vue({
+        el: "#app-7",
+        data: {
+          groceryList: [
+            { id: 0, text: "Vegetales" },
+            { id: 1, text: "Queso" },
+            {
+              id: 2,
+              text: "Cualquier otra cosa que se supone que los humanos coman",
+            },
+          ],
+        },
+      });
+    </script>
+  </body>
+</html>
